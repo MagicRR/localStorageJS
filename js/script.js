@@ -1,6 +1,7 @@
 
 $(document).ready(function(){
     window.onbeforeunload = function (e) {
+
     };
 
     if(typeof localStorage!='undefined')

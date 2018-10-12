@@ -1,14 +1,19 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <title>JavaScript</title>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="js/script.js"></script>
-</head>
-<body>
+    <head>
+      <meta charset="utf-8">
+      <title>JavaScript</title>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+      <script src="js/script.js"></script>
+    </head>
+    <body>
 
-    <textarea rows="30" cols="60" id="message" name="message" onchange="localStorage.message=this.value"></textarea>
+        <textarea rows="30" cols="60" id="message" name="message" onchange="localStorage.message=this.value"></textarea>
+        </br><button id="save">Sauvegarder la révision</button>
+        <select id="select_revision">
+            <option value="valeur">v1</option>
+        </select>
+        <button id="load">Charger la révision</button>
 
-</body>
+    </body>
 </html>

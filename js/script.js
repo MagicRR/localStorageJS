@@ -6,7 +6,7 @@ $(document).ready(function(){
 
     if(typeof localStorage != 'undefined'){
         if('message' in localStorage){
-            // alert("Message récupéré");
+
             document.getElementById('message').value = localStorage.getItem('message');
         }
 
@@ -24,24 +24,19 @@ $(document).ready(function(){
         localStorage.setItem('visites', nbvisites);
 
         // document.getElementById('visites').innerHTML = nbvisites;
-        console.log(localStorage.visites);
+        console.log("Nombre de visites : "+localStorage.visites);
 
         $('#save').click(function(){
 
-            var revisions;
+            revisions = JSON.parse(localStorage.getItem('revisions'));
 
-            if( null != localStorage.getItem( JSON.stringify('revisions')) ){
-                revisions = localStorage.getItem( JSON.stringify('revisions'));
-                revisions.revisions++;
+            if( revisions != null ){
+                revisions.push({message: localStorage.getItem('message')});
+                console.log(revisions);
 
             }else{
-                revisions = {
-                    revisions : 1
-                };
+                revisions = [{message: localStorage.getItem('message') }];
             }
-
-            console.log(revisions.revisions);
-
 
             localStorage.setItem('revisions',JSON.stringify(revisions));
         });

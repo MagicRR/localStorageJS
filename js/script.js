@@ -1,34 +1,23 @@
 
 $(document).ready(function(){
+
     window.onbeforeunload = function (e) {
 
     };
 
     if(typeof localStorage != 'undefined'){
-        if('message' in localStorage){
 
-            document.getElementById('message').value = localStorage.getItem('message');
+        var revisions = JSON.parse(localStorage.getItem('revisions'));
+
+        if( revisions != null ){
+            for( var i = 0; i < revisions.length; i++){
+                $('#select_revision').append(new Option( i+1, revisions[i] ));
+            }
         }
-
-        var nbvisites = localStorage.getItem('visites');
-
-        if( nbvisites != null ){
-          nbvisites = parseInt(nbvisites);
-        }
-        else{
-          nbvisites = 1;
-        }
-
-        nbvisites++;
-
-        localStorage.setItem('visites', nbvisites);
-
-        // document.getElementById('visites').innerHTML = nbvisites;
-        console.log("Nombre de visites : "+localStorage.visites);
 
         $('#save').click(function(){
 
-            revisions = JSON.parse(localStorage.getItem('revisions'));
+            var revisions = JSON.parse(localStorage.getItem('revisions'));
 
             if( revisions != null ){
                 revisions.push({message: localStorage.getItem('message')});
@@ -39,11 +28,22 @@ $(document).ready(function(){
             }
 
             localStorage.setItem('revisions',JSON.stringify(revisions));
+
+            $('#select_revision').append(new Option( revisions.length, revisions.length ));
+
         });
 
-    }
-    else
-    {
+        $('#load').click(function(){
+            var revisions = JSON.parse(localStorage.getItem('revisions'));
+            var id_revision = $('#select_revision option:selected').text();
+
+            console.log(revisions);
+            console.log(id_revision);
+
+            $('#message').html(revisions[id_revision-1].message);
+        });
+
+    }else{
       alert("localStorage n'est pas supporté");
     }
 

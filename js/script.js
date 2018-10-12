@@ -36,11 +36,9 @@ $(document).ready(function(){
         $('#load').click(function(){
             var revisions = JSON.parse(localStorage.getItem('revisions'));
             var id_revision = $('#select_revision option:selected').text();
-
             console.log(revisions);
-            console.log(id_revision);
-
-            $('#message').html(revisions[id_revision-1].message);
+            console.log(revisions[id_revision-1].message);
+            $('#message').val(revisions[id_revision-1].message);
         });
 
     }else{

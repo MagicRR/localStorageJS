@@ -11,7 +11,8 @@ $(document).ready(function(){
 
         if( revisions != null ){
             for( var i = 0; i < revisions.length; i++){
-                $('#select_revision').append(new Option( revisions[i].date + ' - ' + (i+1), revisions[i] ));
+                console.log(revisions[i].date);
+                $('#select_revision').append(new Option( revisions[i].date + ' - ' + (i+1), revisions[i].date + ' - ' + (i+1) ));
             }
         }
 

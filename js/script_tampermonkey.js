@@ -12,6 +12,45 @@
 (function() {
     'use strict';
 
+    function sauvegarde(){
+
+        if(typeof localStorage != 'undefined'){
+
+            //Récupère l'objet révisions du localstorage
+            var revisions = JSON.parse(localStorage.getItem('revisions'));
+            var current_exo = localStorage.getItem('current_excercise');
+            localStorage.setItem('message',FW4EX.editor.getValue());
+
+            //Définis la date courante
+            var date = new Date();
+            var twoDigitMonth = ( date.getMonth() > 8)? (date.getMonth()+1) : '0' + (date.getMonth()+1);
+            var min = ( date.getMinutes() > 9)? (date.getMinutes()+1) : '0' + (date.getMinutes()+1);
+            var currentDate = date.getHours() + ':' + min + ' - ' + date.getDate() + "/" + twoDigitMonth + "/" + date.getFullYear();
+
+            //Si il n'existe pas d'objet révisions dans le localStorage alors on en initialise un,
+            //sinon on rajoute la nouvelle sauvegarde à la suite de l'existant
+            if( revisions != null ){
+                revisions.push({message: localStorage.getItem('message'), date: currentDate, excercise: current_exo});
+            }else{
+                revisions = [{message: localStorage.getItem('message'), date: currentDate, excercise: current_exo}];
+            }
+
+            //On met à jour le localStorage de revisions
+            localStorage.setItem('revisions',JSON.stringify(revisions));
+
+            if( revisions[revisions.length-1].excercise == current_exo ){
+                //On met à jours le <select> afin d'avoir la liste des révisions actualisées
+                $('#select_revision').append(new Option( revisions[revisions.length-1].date + ' - ' + (revisions.length), revisions.length-1 ));
+            }
+        }else{
+            alert("localStorage n'est pas supporté");
+        }
+    }
+
+    window.onbeforeunload = function () {
+        sauvegarde();
+    };
+
     window.onload = function(){
 
         var $ = window.jQuery;
@@ -50,35 +89,7 @@
 
 
                 $('#save').click(function(){
-
-                    localStorage.setItem('message',FW4EX.editor.getValue());
-                    var current_exo = localStorage.getItem('current_excercise');
-
-                    //Récupère l'objet révisions du localstorage
-                    var revisions = JSON.parse(localStorage.getItem('revisions'));
-
-                    //Définis la date courante
-                    var date = new Date();
-                    var twoDigitMonth = ( date.getMonth() > 8)? (date.getMonth()+1) : '0' + (date.getMonth()+1);
-                    var min = ( date.getMinutes() > 9)? (date.getMinutes()+1) : '0' + (date.getMinutes()+1);
-                    var currentDate = date.getHours() + ':' + min + ' - ' + date.getDate() + "/" + twoDigitMonth + "/" + date.getFullYear();
-
-                    //Si il n'existe pas d'objet révisions dans le localStorage alors on en initialise un,
-                    //sinon on rajoute la nouvelle sauvegarde à la suite de l'existant
-                    if( revisions != null ){
-                        revisions.push({message: localStorage.getItem('message'), date: currentDate, excercise: current_exo});
-                    }else{
-                        revisions = [{message: localStorage.getItem('message'), date: currentDate, excercise: current_exo}];
-                    }
-
-                    //On met à jour le localStorage de revisions
-                    localStorage.setItem('revisions',JSON.stringify(revisions));
-
-                    if( revisions[revisions.length-1].excercise == current_exo ){
-                        //On met à jours le <select> afin d'avoir la liste des révisions actualisées
-                        $('#select_revision').append(new Option( revisions[revisions.length-1].date + ' - ' + (revisions.length), revisions.length-1 ));
-                    }
-
+                    sauvegarde();
                 });
 
                 $('#load').click(function(){
